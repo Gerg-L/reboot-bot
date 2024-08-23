@@ -1,5 +1,5 @@
 [package]
-name = "bot"
+name = "reboot-bot"
 version = "1.0.0"
 edition = "2021"
 

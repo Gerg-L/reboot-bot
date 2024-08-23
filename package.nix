@@ -8,5 +8,5 @@ rustPlatform.buildRustPackage {
   src = ./.;
   cargoLock.lockFile = ./Cargo.lock;
 
-  meta.mainProgram = "bot";
+  meta.mainProgram = "reboot-bot";
 }
