@@ -1,5 +1,5 @@
 use poise::serenity_prelude as serenity;
-use std::process::Command;
+use std::{process::Command, thread::sleep, time::Duration};
 
 struct Data {}
 type Error = Box<dyn std::error::Error + Send + Sync>;
@@ -17,12 +17,18 @@ async fn reboot(ctx: Context<'_>) -> Result<(), Error> {
         ];
 
         if allowed_users.contains(&ctx.author().id.into()) {
-            let output = Command::new("systemctl")
+            ctx.say("Stop crashing stuff").await?;
+            let _ = Command::new("systemctl")
                 .args(["restart", "minecraft-server.service"])
                 .output()?;
 
+            sleep(Duration::from_secs(5));
+
+            let output = Command::new("systemctl")
+                .args(["list-units", "-q", "minecraft-server.service"])
+                .output()?;
             ctx.say(format!(
-                "Stop crashing stuff \nLog: {}",
+                "Restarted\n{}",
                 String::from_utf8_lossy(&output.stdout)
             ))
             .await?;
